@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const routes = require("./routes");
 
 const server = express();
+
 mongoose.connect("mongodb+srv://levoid:mawchine17@newsapi-ngu16.mongodb.net/omnistack-week?retryWrites=true&w=majority", 
 {
     useNewUrlParser: true
