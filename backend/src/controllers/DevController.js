@@ -1,3 +1,6 @@
-// > criar controller com a função store
-// > pedir controller nas rotas
-// > executar a store pela rota POST
+module.exports = {
+    store(request, response){
+        const {username} = request.body;
+        return response.json({"username": username});
+    }
+}
