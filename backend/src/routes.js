@@ -3,6 +3,6 @@ const DevController = require("./controllers/DevController");
 
 const routes = express.Router();
 
-routes.post("/add/dev", DevController.store)
+routes.post("/dev", DevController.store)
 
 module.exports = routes
