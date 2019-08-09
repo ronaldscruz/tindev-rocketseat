@@ -17,7 +17,7 @@ module.exports = {
             return response.status(400).json({ error: "Você já deu dislike nesse dev!" });
         }
 
-        loggedDev.likes.push(targetDev);
+        loggedDev.dislikes.push(targetDevId);
         await loggedDev.save();
 
         return response.json(loggedDev)
