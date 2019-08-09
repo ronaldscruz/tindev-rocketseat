@@ -3,8 +3,8 @@ const Dev = require("../models/Dev");
 module.exports = {
     async store(request, response){
         // Retornando parametros da URL(recebe like) e do Header(dá like)
-        const { targetDevId } = request.params;
-        const { loggedDevId } = request.headers;
+        const { targetDevId } = request.params.devId;
+        const { loggedDevId } = request.headers.user_id;
 
         const loggedDev = await Dev.findById(loggedDevId);
         const targetDev = await Dev.findById(targetDevId);

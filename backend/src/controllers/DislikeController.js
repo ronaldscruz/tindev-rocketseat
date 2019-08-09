@@ -3,11 +3,11 @@ const Dev = require("../models/Dev");
 module.exports = {
     // Mesma lógica do LikeController
     async store(request, response){
-        const { devId } = request.params;
-        const { user_id } = request.headers;
+        const { targetDevId } = request.params.devId;
+        const { loggedDevId } = request.headers.user_id;
 
-        const targetDev = await Dev.findById(devId);
-        const loggedDev = await Dev.findById(user_id);
+        const targetDev = await Dev.findById(targetDevId);
+        const loggedDev = await Dev.findById(loggedDevId);
 
         if(!targetDev){
             return response.status(400).json({ error: "Esse dev não existe ;/" });
