@@ -5,6 +5,9 @@ module.exports = {
         const { devId } = request.params;
         const { user_id } = request.headers;
 
-        return response.json({log: `${user_id} liked ${devId}`});
+        const loggedDev = await Dev.findById(user_id);
+        const targetDev = await Dev.findById(devId);
+
+        return response.json({log: `${loggedDev.name} liked ${targetDev.name}`});
     }
 };
