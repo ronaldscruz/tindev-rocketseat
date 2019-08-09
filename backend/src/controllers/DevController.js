@@ -2,6 +2,25 @@ const axios = require("axios");
 const Dev = require("../models/Dev");
 
 module.exports = {
+    async index(request, response){
+        const loggedDevId = request.headers.user_id;
+        console.log(`>> Retrieved ID from Header: ${loggedDevId}`);
+
+        const loggedDev = await Dev.findById(loggedDevId);
+        console.log(`>> Found user: ${loggedDev.name}`);
+
+        const devs = await Dev.find({
+            $and: [
+                { _id: { $ne: loggedDevId } },
+                { _id: { $nin: loggedDev.likes } },
+                { _id: { $nin: loggedDev.dislikes } }
+            ]
+        });
+        console.log(`>> DB search done`);
+
+        return response.json(devs);
+    },
+
     async store(request, response){
         // Nome de usuário no JSON da requisição
         const { username } = request.body;
