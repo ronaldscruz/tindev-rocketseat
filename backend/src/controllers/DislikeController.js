@@ -13,7 +13,7 @@ module.exports = {
             return response.status(400).json({ error: "Esse dev não existe ;/" });
         }
 
-        if(loggedDev.likes.includes(targetDev._id)){
+        if(loggedDev.dislikes.includes(targetDev._id) || loggedDev.likes.includes(targetDev._id)){
             return response.status(400).json({ error: "Você já deu dislike nesse dev!" });
         }
 

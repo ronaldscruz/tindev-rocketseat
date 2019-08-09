@@ -15,7 +15,7 @@ module.exports = {
         }
 
         // Se o usuário ja deu like nesse dev, retornar erro
-        if(loggedDev.likes.includes(targetDev._id)){
+        if(loggedDev.likes.includes(targetDev._id) || loggedDev.dislikes.includes(targetDev._id)){
             return response.status(400).json({ error: "Você já deu like nesse dev!" });
         }
 
