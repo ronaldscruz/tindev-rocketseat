@@ -3,8 +3,8 @@ const Dev = require("../models/Dev");
 module.exports = {
     // Mesma lógica do LikeController
     async store(request, response){
-        const { targetDevId } = request.params.devId;
-        const { loggedDevId } = request.headers.user_id;
+        const targetDevId = request.params.devId;
+        const loggedDevId = request.headers.user_id;
 
         const targetDev = await Dev.findById(targetDevId);
         const loggedDev = await Dev.findById(loggedDevId);
