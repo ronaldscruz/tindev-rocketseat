@@ -3,11 +3,11 @@ const Dev = require("../models/Dev");
 module.exports = {
     async store(request, response){
         // Retornando parametros da URL(recebe like) e do Header(dá like)
-        const { devId } = request.params;
-        const { user_id } = request.headers;
+        const { targetDevId } = request.params;
+        const { loggedDevId } = request.headers;
 
-        const loggedDev = await Dev.findById(user_id);
-        const targetDev = await Dev.findById(devId);
+        const loggedDev = await Dev.findById(loggedDevId);
+        const targetDev = await Dev.findById(targetDevId);
 
         // Retornar erro se o Dev 'likado' não existir
         if(!targetDev){
