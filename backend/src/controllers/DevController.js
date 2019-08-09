@@ -3,9 +3,10 @@ const Dev = require("../models/Dev");
 
 module.exports = {
     async store(request, response){
-        // Usuário no JSON da requisição
+        // Nome de usuário no JSON da requisição
         const { username } = request.body;
 
+        // Se o usuário já estiver cadastrado, retorne-o
         const userExists = await Dev.findOne({ user: username });
 
         if(userExists){
