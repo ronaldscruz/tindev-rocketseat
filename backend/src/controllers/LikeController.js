@@ -21,7 +21,7 @@ module.exports = {
 
         // MATCH!
         if(targetDev.likes.includes(loggedDev._id)){
-            return response.json({ match: true });
+            console.log(`Match entre ${loggedDev} e ${targetDev}!`);
         }
 
         // Caso tudo esteja certo, adicionar like ao array de Likes
