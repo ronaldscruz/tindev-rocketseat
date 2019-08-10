@@ -5,6 +5,13 @@
    text-align: center;
 }
 
+.main-container .empty-tindev{
+   font-size: 32px;
+   color: #999999;
+   font-weight: bold;
+   margin-top: 300px;
+}
+
 .main-container ul{
    list-style: none;
    display: grid;
@@ -20,6 +27,7 @@
 }
 
 .main-container ul li img{
+   border-radius: 5px 5px 0 0;
    max-width: 100%;
 }
 
