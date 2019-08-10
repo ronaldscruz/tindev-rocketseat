@@ -14,7 +14,6 @@ module.exports = {
                 { _id: { $nin: loggedDev.dislikes } }
             ]
         });
-        console.log(`>> DB search done`);
 
         return response.json(devs);
     },
