@@ -4,10 +4,8 @@ const Dev = require("../models/Dev");
 module.exports = {
     async index(request, response){
         const loggedDevId = request.headers.user_id;
-        console.log(`>> Retrieved ID from Header: ${loggedDevId}`);
 
         const loggedDev = await Dev.findById(loggedDevId);
-        console.log(`>> Found user: ${loggedDev.name}`);
 
         const devs = await Dev.find({
             $and: [
