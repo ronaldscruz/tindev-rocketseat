@@ -1,74 +1,50 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import api from '../../services/api';
+
+import "./index.css";
 
 import logo from '../../assets/logo.svg';
 import like from '../../assets/like.svg';
 import dislike from '../../assets/dislike.svg';
 
 export default function Main({ match }){
+	const [devs, setDevs] = useState([]);
+
+	useEffect(() => {
+		async function loadDevs(){
+			const api_response = await api.get("devs", {
+				headers: {
+					user_id: match.params.id
+				}
+			}).catch(err => (setDevs(["Erro ao consultar os dados na API."])));
+
+			setDevs(api_response.data);
+		}
+
+		loadDevs();
+	}, [match.params.id]);
+
 	return(
 		<div className="main-container">
 			<img src={logo} alt="Tindev"/>
 			<ul>
-				<li>
-					<img src="https://avatars2.githubusercontent.com/u/36777554?v=4" alt="Foto de Ronald S. Cruz"/>
-					<footer>
-						<strong>Ronald S. Cruz</strong>
-						<p>18y, web developer. {"<"}/{">"} with 💜</p>
-					</footer>
-					<div className="rating-buttons">
-						<button type="button">
-							<img src={like} alt="Like"/>
-						</button>
-						<button type="button">
-							<img src={dislike} alt="Dislike"/>
-						</button>
-					</div>
-				</li>
-				<li>
-					<img src="https://avatars3.githubusercontent.com/u/20933173?v=4" alt="Foto de Juliovaz"/>
-					<footer>
-						<strong>Juliovaz</strong>
-						<p>Coding ideas for a better life :earth_americas: Front-end Developer</p>
-					</footer>
-					<div className="rating-buttons">
-						<button type="button">
-							<img src={like} alt="Like"/>
-						</button>
-						<button type="button">
-							<img src={dislike} alt="Dislike"/>
-						</button>
-					</div>
-				</li>
-				<li>
-					<img src="https://avatars2.githubusercontent.com/u/30543111?v=4" alt="Foto de Vinícius Alves"/>
-					<footer>
-						<strong>Vinícius Alves</strong>
-						<p>vejo o perigo à frente, esperanças são balas no pente</p>
-					</footer>
-					<div className="rating-buttons">
-						<button type="button">
-							<img src={like} alt="Like"/>
-						</button>
-						<button type="button">
-							<img src={dislike} alt="Dislike"/>
-						</button>
-					</div>
-				</li>
-				<li>
-					<img src="https://avatars0.githubusercontent.com/u/30542437?v=4" alt="Foto de Vitor Hugo"/>
-					<footer>
-						<strong>Vitor Hugo</strong>
-						<p>18y old, São Paulo - SP -\r\nTécnico em Informática. Futuro dev web.</p>
-					</footer>
-					<div className="rating-buttons">
-						<button type="button">
-							<img src={like} alt="Like"/>
-						</button>
-						<button type="button">
-							<img src={dislike} alt="Dislike"/>
-						</button>
-					</div>
-				</li>
+				{devs.map(dev => (
+					<li>
+						<img src={dev.avatar || "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fmoonvillageassociation.org%2Fwp-content%2Fuploads%2F2018%2F06%2Fdefault-profile-picture1-744x744.jpg&f=1"} alt={`Foto de ${dev.name || "desconhecido"}`}/>
+						<footer>
+							<strong>{dev.name || "Tindev vazio :("}</strong>
+							<p>{dev.bio || "Que tal convidar novos amigos para cá?"}</p>
+						</footer>
+						<div className="rating-buttons">
+							<button type="button">
+								<img src={like} alt="Like"/>
+							</button>
+							<button type="button">
+								<img src={dislike} alt="Dislike"/>
+							</button>
+						</div>
+					</li>
+				))}	
 			</ul>
 		</div>
 	);
