@@ -89,15 +89,22 @@ export default function Main({navigation}){
                )
             }
          </View>
-
-         <View style={styles.buttons_container} >
-            <TouchableOpacity style={styles.button} onPress={handleLike} >
-               <Image source={like}/>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleDislike} >
-               <Image source={dislike}/>
-            </TouchableOpacity>
-         </View>
+         
+         {
+            devs.length > 0 ? 
+            (
+               <View style={styles.buttons_container} >
+                  <TouchableOpacity style={styles.button} onPress={handleLike} >
+                     <Image source={like}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.button} onPress={handleDislike} >
+                     <Image source={dislike}/>
+                  </TouchableOpacity>
+               </View>
+            )
+            :
+            (<View/>)
+         }
       </SafeAreaView>
    );
 }
