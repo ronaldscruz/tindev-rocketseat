@@ -1,14 +1,41 @@
-import React, {useState} from 'react';
-import {KeyboardAvoidingView, Platform, TextInput, TouchableOpacity, StyleSheet, Image, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+	KeyboardAvoidingView, 
+	Platform, 
+	TextInput, 
+	TouchableOpacity, 
+	StyleSheet, 
+	Image, 
+	Text
+} from 'react-native';
 
+import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 import logo from '../assets/logo.png';
 
 export default function Login({navigation}){
 	const [user, setUser] = useState('');
+	const [feedback, setFeedback] = useState('');
 
-	async function handleLogin(user){
-		const api_response = await api.post('devs', { username: user })
+	useEffect(() => {
+		AsyncStorage.getItem('user_id').then(user_id => {
+			if(user){
+				setFeedback("Sucesso! Você será redirecionado em breve.");
+				navigation.navigate('Main', user_id);
+			}
+		}).catch(err => {
+			setFeedback("Erro ao autenticar-se. Verifique seu login ou sua conexão.");
+		})
+	}, [])
+
+	async function handleLogin(){
+		const api_response = await api.post('devs', { username: user });
+
+		const { _id } = api_response.data;
+
+		AsyncStorage.setItem('user_id', _id);
+
+		navigation.navigate('Main', { user_id: _id})
 	}
 
    return(
@@ -25,11 +52,12 @@ export default function Login({navigation}){
             placeholderTextColor="#999"
 				style={styles.gituser_input}
 				value={user}
-				onChange={setUser}
+				onChangeText={setUser}
          />
          <TouchableOpacity style={styles.enter_button} onPress={handleLogin}>
 				<Text style={styles.enter_button_text}>Entrar</Text>
-        	</TouchableOpacity>   
+        	</TouchableOpacity>
+			  	<TextInput value={feedback} />   
      	</KeyboardAvoidingView> 
    );
 }
