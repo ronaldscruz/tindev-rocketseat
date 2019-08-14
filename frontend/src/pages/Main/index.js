@@ -8,9 +8,11 @@ import "./index.css";
 import logo from '../../assets/logo.svg';
 import like from '../../assets/like.svg';
 import dislike from '../../assets/dislike.svg';
+import itsamatch from "../../assets/itsamatch.png";
 
 export default function Main({ match }){
 	const [devs, setDevs] = useState([]);
+	const [matchDev, setMatchDev] = useState();
 
 	useEffect(() => {
 		async function loadDevs(){
@@ -32,7 +34,7 @@ export default function Main({ match }){
 		});
 
 		socket.on("match", dev => {
-			console.log(dev);
+			setMatchDev(dev);
 		})
 
 	}, [match.params.id]);
@@ -87,7 +89,18 @@ export default function Main({ match }){
 						<div className="empty-tindev">Seu Tindev está vazio :(</div>
 					)
 				}
-			
+
+			{
+				matchDev && (
+					<div className="match-container">
+						<img src={itsamatch} alt="It's a Match!" />
+						<img className="match-avatar" src={matchDev.avatar} alt={`Foto de ${matchDev.name}`} />
+						<strong className="match-name" > {matchDev.name} </strong>
+						<p className="match-bio" >{matchDev.bio} </p>
+						<button className="close-match" type="button" onClick={() => setMatchDev(null)} >LEGAL!</button>
+					</div>
+				)
+			}
 		</div>
 	);
 }
