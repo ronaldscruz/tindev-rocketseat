@@ -9,7 +9,7 @@ import {
 	Text
 } from 'react-native';
 
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
 import api from '../services/api';
 import logo from '../assets/logo.png';
 
@@ -17,23 +17,23 @@ export default function Login({navigation}){
 	const [user, setUser] = useState('');
 	const [feedback, setFeedback] = useState('');
 
-	useEffect(() => {
-		AsyncStorage.getItem('user_id').then(user_id => {
-			if(user_id){
-				setFeedback("Sucesso! Você será redirecionado em breve.");
-				navigation.navigate('Main', user_id);
-			}
-		}).catch(err => {
-			setFeedback("Erro ao autenticar-se. Verifique seu login ou sua conexão.");
-		})
-	}, [])
+	// useEffect(() => {
+	// 	AsyncStorage.getItem('user_id').then(user_id => {
+	// 		if(user_id){
+	// 			setFeedback("Sucesso! Você será redirecionado em breve.");
+	// 			navigation.navigate('Main', user_id);
+	// 		}
+	// 	}).catch(err => {
+	// 		setFeedback("Erro ao autenticar-se. Verifique seu login ou sua conexão.");
+	// 	})
+	// }, [])
 
 	async function handleLogin(){
 		const api_response = await api.post('devs', { username: user });
 
 		const { _id } = api_response.data;
 
-		AsyncStorage.setItem('user_id', _id);
+		// AsyncStorage.setItem('user_id', _id);
 
 		navigation.navigate('Main', { user_id: _id})
 	}
