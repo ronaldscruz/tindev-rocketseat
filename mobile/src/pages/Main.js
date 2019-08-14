@@ -26,7 +26,7 @@ export default function Main({navigation}){
             headers: {
                user_id
             }
-         }).catch(err => (setDevs(["Erro ao consultar os dados na API."])));
+         });
    
          setDevs(api_response.data);
       }
@@ -37,23 +37,30 @@ export default function Main({navigation}){
    async function handleLike(){
       const [ dev, ...rest ] = devs;
 
-      await api.post(`devs/${dev._id}/likes`, null, {
-         headers: {
-            user_id
-         }
-      })
+      if(dev && rest){
+         await api.post(`devs/${dev._id}/likes`, null, {
+            headers: {
+               user_id
+            }
+         })
 
-      setDevs(rest);
+         setDevs(rest);
+      }
+      
    }
 
    async function handleDislike(){
       const [ dev, ...rest ] = devs;
 
-      await api.post(`devs/${dev._id}/dislikes`, null, {
-         headers: {
-            user_id
-         }
-      })
+      if(dev && rest){
+         await api.post(`devs/${dev._id}/dislikes`, null, {
+            headers: {
+               user_id
+            }
+         })
+
+         setDevs(rest);
+      }
 
       setDevs(rest);
    }
@@ -75,7 +82,7 @@ export default function Main({navigation}){
                (
                   devs.map((dev, index) => (
                      <View style={[styles.card, {zIndex: devs.length - index }]} key={dev._id} >
-                        <Image style={styles.avatar} source={{uri: dev.avatar}} />
+                        <Image style={styles.avatar} source={{uri: dev.avatar}}/>
                         <View style={styles.footer}>
                            <Text style={styles.name}>{dev.name}</Text>
                            <Text style={styles.bio} numberOfLines={3} >{dev.bio}</Text>
@@ -90,21 +97,14 @@ export default function Main({navigation}){
             }
          </View>
          
-         {
-            devs.length > 0 ? 
-            (
-               <View style={styles.buttons_container} >
-                  <TouchableOpacity style={styles.button} onPress={handleLike} >
-                     <Image source={like}/>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.button} onPress={handleDislike} >
-                     <Image source={dislike}/>
-                  </TouchableOpacity>
-               </View>
-            )
-            :
-            (<View/>)
-         }
+         <View style={styles.buttons_container} >
+            <TouchableOpacity style={styles.button} onPress={handleLike} >
+               <Image source={like}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={handleDislike} >
+               <Image source={dislike}/>
+            </TouchableOpacity>
+         </View>
       </SafeAreaView>
    );
 }
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
    avatar: {
       flex: 1,
       height: 300,
-      width: 500
+      backgroundColor: "#fff"
    },
 
    footer: {
