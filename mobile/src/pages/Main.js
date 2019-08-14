@@ -9,14 +9,17 @@ import {
 } from 'react-native';
 
 import api from '../services/api';
-import AsyncStorage from '@react-native-community/async-storage';
+// import AsyncStorage from '@react-native-community/async-storage';
+import io from 'socket.io-client';
 
 import logo from "../assets/logo.png";
 import like from '../assets/like.png';
 import dislike from '../assets/dislike.png';
+import itsamatch from "../assets/itsamatch.png";
 
 export default function Main({navigation}){
    const [devs, setDevs] = useState([]);
+   const [matchDev, setMatchDev] = useState(null);
 
    const user_id = navigation.getParam("user_id");
 
@@ -32,6 +35,17 @@ export default function Main({navigation}){
       }
 
       loadDevs();
+   }, [user_id]);
+
+   useEffect(() => {
+      const socket = io("http://localhost:3333", {
+         query: { user_id: user_id }
+      });
+
+      socket.on("match", dev => {
+         setMatchDev(dev);
+      });
+
    }, [user_id]);
 
    async function handleLike(){
@@ -66,7 +80,7 @@ export default function Main({navigation}){
    }
 
    async function handleLogout(){
-      AsyncStorage.clear();
+      // AsyncStorage.clear();
       navigation.navigate('Login');
    }
 
@@ -105,6 +119,18 @@ export default function Main({navigation}){
                <Image source={dislike}/>
             </TouchableOpacity>
          </View>
+
+         {matchDev && (
+            <View style={styles.match_container}>
+               <Image style={styles.itsamatch_img} source={itsamatch}/>
+               <Image style={styles.match_avatar} source={{uri: matchDev.avatar}}/>
+               <Text style={styles.match_name}>{matchDev.name}</Text>
+               <Text style={styles.match_bio}>{matchDev.bio}</Text>
+               <TouchableOpacity onPress={() => setMatchDev(null)}>
+                  <Text style={styles.close_match}>LEGAL!</Text>
+               </TouchableOpacity>
+            </View>
+         )}
       </SafeAreaView>
    );
 }
@@ -194,6 +220,52 @@ const styles = StyleSheet.create({
       alignSelf: "center",
       color: "#999",
       fontSize: 24,
+      fontWeight: 'bold'
+   },
+
+   match_container: {
+      ...StyleSheet.absoluteFillObject,
+      zIndex: 255,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0, 0, 0, 0.8)",
+   },
+
+   itsamatch_img: {
+      height: 60,
+      resizeMode: 'contain'
+   },
+
+   match_avatar: {
+      width: 160,
+      height: 160,
+      borderRadius: 80,
+      borderWidth: 5,
+      borderColor: "#fff",
+      marginVertical: 30,
+      backgroundColor: "#fff",
+   },
+
+   match_name: {
+      fontSize: 26,
+      fontWeight: "bold",
+      color: "#fff"
+   },
+
+   match_bio: {
+      marginTop: 10,
+      fontSize: 16,
+      color: "rgba(255, 255, 255, 0.8)",
+      lineHeight: 24,
+      textAlign: "center",
+      paddingHorizontal: 30
+   },
+
+   close_match: {
+      fontSize: 16,
+      color: "rgba(255, 255, 255, 0.8)",
+      textAlign: "center",
+      marginTop: 30,
       fontWeight: 'bold'
    }
 })
