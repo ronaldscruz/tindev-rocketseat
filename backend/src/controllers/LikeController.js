@@ -21,7 +21,16 @@ module.exports = {
 
         // MATCH!
         if(targetDev.likes.includes(loggedDev._id)){
-            console.log(`>> Match entre ${loggedDev.name} e ${targetDev.name}!`);
+            const loggedSocket = request.connectedUsers[loggedDevId];
+            const targetSocket = request.connectedUsers[targetDevId];
+
+            if(loggedSocket){
+                request.io.to(loggedSocket).emit("match", targetDev);
+            }
+
+            if(targetSocket){
+                request.io.to(targetSocket).emit("match", loggedDev);
+            }
         }
 
         // Caso tudo esteja certo, adicionar like ao array de Likes
