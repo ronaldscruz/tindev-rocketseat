@@ -19,7 +19,7 @@ export default function Login({navigation}){
 
 	useEffect(() => {
 		AsyncStorage.getItem('user_id').then(user_id => {
-			if(user){
+			if(user_id){
 				setFeedback("Sucesso! Você será redirecionado em breve.");
 				navigation.navigate('Main', user_id);
 			}
