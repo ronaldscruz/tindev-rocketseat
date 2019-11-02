@@ -1,6 +1,5 @@
 # Omnistack Week Project: Tindev
-## Tinder for developers
-<br>
+Tinder for developers
 <br>
 ## How to run
 
